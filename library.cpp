@@ -1,3 +1,6 @@
+//shinchan_library
+//combination,unionfind以外は自作となってます。
+
 #include <bits/stdc++.h>
 #define be(v) (v).begin(),(v).end()
 #define pb(q) push_back(q)
