@@ -1,3 +1,5 @@
+//shinchan自作1
+
 #include <bits/stdc++.h>
 typedef long long ll;
 using namespace std;
