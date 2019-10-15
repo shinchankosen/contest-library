@@ -197,7 +197,7 @@ vector<vector<ll> > mul(vector<vector<ll> > v1, vector<vector<ll> > v2){
     return res;
 }
 
-vector<vector<ll> > matpow(vector<vector<ll> > a,n) {
+vector<vector<ll> > matpow(vector<vector<ll> > a,ll n) {
     vector<vector<ll> > res(k,vector<ll> (k,0));
     for(int i=0;i<k;i++){
         res[i][i]=1;
