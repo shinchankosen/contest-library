@@ -2,14 +2,14 @@
 typedef long long ll;
 using namespace std;
 int main() {
-	ll q,a,b;
-	cin>>q;
-	for(int i=0;i<q;i++){
-		cin>>a>>b;
-		if(a==b)cout<<0<<endl;
-		else if(a%b&&b%a)cout<<2<<endl;
-		else cout<<1<<endl; 
-	}
+    ll q,a,b;
+    cin>>q;
+    for(int i=0;i<q;i++){
+	cin>>a>>b;
+	if(a==b)cout<<0<<endl;
+	else if(a%b&&b%a)cout<<2<<endl;
+	else cout<<1<<endl; 
+    }
     return 0;
 }
 
