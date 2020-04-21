@@ -1,32 +1,26 @@
 ///////////union-find
 /*
-ll uni[100005];
-ll root(ll u){
-    if(uni[u]<0)return u;
-    return uni[u]=root(uni[u]);
-}
-void connect(int a,int b){
-    a=root(a);
-    b=root(b);
-    if(a==b)return;
-    if(uni[a]<uni[b]){
-        a^=b;
-        b^=a;
-        a^=b;
+struct UnionFind {
+    vector<int> par;
+    UnionFind(int n) :par(n, -1) { }
+    void init(int n) { par.assign(n, -1); }
+    int root(int x) {
+        if (par[x] < 0) return x;
+        else return par[x] = root(par[x]);
     }
-    uni[a]+=uni[b];
-    uni[b]=a;
-    return;
-}
-ll size(ll u){
-    return -uni[root(u)];
-}
-
-
-//////memset(uni,-1,sizeof(uni));
+    bool connect(int x, int y) {
+        x = root(x); y = root(y);
+        if (x == y) return false;
+        if (par[x] > par[y]) swap(x, y);
+        par[x] += par[y];
+        par[y] = x;
+        return true;
+    }
+    int size(int x) {
+        return -par[root(x)];
+    }
+};
 */
-
-
 
 
 
