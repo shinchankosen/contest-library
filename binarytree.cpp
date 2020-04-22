@@ -1,28 +1,34 @@
 
 /////BIT ****(1-index)****
 /*
-ll n,m;
-ll BIT[100001];
-void add(ll x,ll y){
-    while(x<=n){
-        BIT[x]+=y;
-        x+=(x&-x);
+template <class Abel> struct BIT {
+    const Abel UNITY_SUM = 0;                       // to be set
+    vector<Abel> dat;
+   
+    // [1, n]
+    BIT(int n) : dat(n + 1, UNITY_SUM) { }
+    void init(int n) { dat.assign(n + 1, UNITY_SUM); }
+    
+    // a is 1-indexed
+    inline void add(int a, Abel x) {
+        for (int i = a; i < (int)dat.size(); i += i & -i)
+            dat[i] = dat[i] + x;
     }
-}
-ll sum(ll x,ll y){
-    m=0;
-    x--;
-    while(y>=1){
-        m+=BIT[y];
-        y-=(y&(-y));
+    
+    // [1, a], a is 1-indexed
+    inline Abel sum(int a) {
+        Abel res = UNITY_SUM;
+        for (int i = a; i > 0; i -= i & -i)
+            res = res + dat[i];
+        return res;
     }
-    while(x>=1){
-        m-=BIT[x];
-        x-=(x&(-x));
+    
+    // [a, b), a and b are 1-indexed
+    inline Abel sum(int a, int b) {
+        return sum(b - 1) - sum(a - 1);
     }
-    return m; 
-}
-main-> memset(BIT,0,sizeof(BIT));
+};
+
 */
 
 
