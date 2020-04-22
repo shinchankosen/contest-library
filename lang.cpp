@@ -35,4 +35,3 @@ struct node{
 bool judge( const node& left, const node& right ) {
     return left.x == right.x ? left.y < right.y : left.x < right.x;
 }
-*/
