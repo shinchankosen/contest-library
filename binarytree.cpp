@@ -131,7 +131,7 @@ public:
         return vl + vr;
     }
 };
-*///sum
+*///add_sum
 
 
 
@@ -194,4 +194,4 @@ public:
         return min(vl, vr);
     }
 };
-*///min
+*///update_min
