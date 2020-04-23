@@ -113,10 +113,10 @@ template<class FLOWTYPE> struct Dinic {
     }
 };
 
-Graph<int> G
-G.addedge(s,t,cap)
-Dinic<int> di
-di.solve(G,s,t)
+Graph<int> G(n);
+G.addedge(s,t,cap);
+Dinic<int> di;
+di.solve(G,s,t);
 */
 
 
