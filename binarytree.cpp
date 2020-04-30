@@ -1,8 +1,7 @@
 
 /////BIT ****(1-index)****
-/*
 template <class Abel> struct BIT {
-    const Abel UNITY_SUM = 0;                       // to be set
+    const Abel UNITY_SUM = 0;           
     vector<Abel> dat;
    
     // [1, n]
@@ -29,16 +28,12 @@ template <class Abel> struct BIT {
     }
 };
 
-*/
-
-
 
 
 
 
 
 /////////segmenttree
-/*
 struct SegmentTree {
 private:
     ll n;
@@ -72,13 +67,12 @@ public:
         return min(vl, vr);
     }
 };
-*////INF
+//INF
 
 
 
 
 ///////Lazy_segmenttree
-/*
 struct LazySegmentTree {
 private:
     int n;
@@ -131,14 +125,13 @@ public:
         return vl + vr;
     }
 };
-*///add_sum
+//add_sum
 
 
 
 
 
 ////////////
-/*
 struct LazySegmentTree {
 private:
     int n;
@@ -194,4 +187,4 @@ public:
         return min(vl, vr);
     }
 };
-*///update_min
+//update_min
