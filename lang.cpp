@@ -41,7 +41,6 @@ bool judge( const node& left, const node& right ) {
 
 
 ///////modint
-/*
 struct mint {
     ll x; // typedef long long ll;
     mint(ll x=0):x((x%mod+mod)%mod){}
@@ -73,4 +72,3 @@ struct mint {
 };
 istream& operator>>(istream& is, const mint& a) { return is >> a.x;}
 ostream& operator<<(ostream& os, const mint& a) { return os << a.x;}
-*/
