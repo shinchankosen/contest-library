@@ -1,4 +1,4 @@
-/*
+
 long long modpow(long long a, long long n) {
     long long res = 1;
     while (n > 0) {
@@ -8,11 +8,9 @@ long long modpow(long long a, long long n) {
     }
     return res;
 }
-*/
 
 
 ///////// combinatison
-/*
 ll fac[200007],finv[200007],inv[200007];
 void cominit(){
     fac[0]=fac[1]=1;
@@ -30,7 +28,6 @@ ll com(ll n,ll k){
     return fac[n]*(finv[k]*finv[n-k]%mod)%mod;
 }
 main-> cominit();
-*/
 
 
 
@@ -39,7 +36,6 @@ main-> cominit();
 
 
 
-/*
 {
 //Z-algorithm
     vector<int> Z(S.size());
@@ -58,11 +54,9 @@ main-> cominit();
     }
 }
 
-*/
 
 
-
-/*RollingHash
+//// RollingHash
 struct RollingHash {
     static const int base1 = 1007, base2 = 2009;
     static const int mod1 = 1000000007, mod2 = 1000000009;
@@ -104,11 +98,6 @@ struct RollingHash {
         return low;
     }
 };
-*/
-
-
-
-
 
 
 
@@ -117,8 +106,6 @@ struct RollingHash {
 
 
 ///////Matrix
-/*
-// Matrix
 template<class T> struct Matrix {
     vector<vector<T> > val;
     //　縦, 横, 初期値
@@ -181,12 +168,12 @@ template<class T> Matrix<T> operator - (const Matrix<T> &A, const Matrix<T> &B) 
             R[i][j] = A[i][j] - B[i][j];
     return R;
 }
-*/
+
+
 
 
 
 ////extEuclid
-/*
 long long extGCD(long long a, long long b, long long &x, long long &y) {
     if (b == 0) {
         x = 1;
@@ -197,5 +184,4 @@ long long extGCD(long long a, long long b, long long &x, long long &y) {
     y -= a/b * x;
     return d;
 }
-*/
 
