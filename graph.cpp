@@ -1,5 +1,4 @@
 ///////////union-find
-/*
 struct UnionFind {
     vector<int> par;
     UnionFind(int n) :par(n, -1) { }
@@ -20,11 +19,9 @@ struct UnionFind {
         return -par[root(x)];
     }
 };
-*/
 
 
 // Doubling , LCA , dis , Tree
-/*
 vector<vector<ll> > v;
 struct Doubling {
 private:
@@ -70,12 +67,10 @@ public:
     // a, bの距離
     ll dist(ll a, ll b){return dis[a] + dis[b] - dis[lca(a,b)] * 2;}
 } d;
-*/
 
 
 
 ////////network_flow
-/*
 template<class FLOWTYPE> struct Edge {
     int rev, from, to;
     FLOWTYPE cap, icap;
@@ -170,11 +165,9 @@ Graph<int> G(n);
 G.addedge(s,t,cap);
 Dinic<int> di;
 di.solve(G,s,t);
-*/
 
 
 //////////dijkstra
-/*
 ll dis[100000];
 vector<vector<pair<ll,ll> > > g(100000);
 void dijkstra(ll start){
@@ -199,11 +192,9 @@ void dijkstra(ll start){
     }
     return;
 }
-*/
 
 
 //topological sort
-/*
 typedef vector<int> VI;
 VI g[100010];
 int h[100010];
@@ -228,12 +219,11 @@ int h[100010];
     }
   }
   for(int i: ans) cout << i << endl;
-*/
 
 
 
 /////////bellman_ford
-/*{
+{
     ll d[n];bool maki;
     struct edge{ll from,to,cost;};
     vector<edge> g;
@@ -251,4 +241,4 @@ int h[100010];
             }
         }
     }
-}*/
+}
