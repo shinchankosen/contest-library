@@ -1,1 +1,1 @@
-@Sophia_maki, @shinchankosen
+競プロで使用するライブラリを置いてます。
