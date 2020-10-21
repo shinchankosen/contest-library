@@ -168,29 +168,31 @@ di.solve(G,s,t);
 
 
 //////////dijkstra
-ll dis[100000];
-vector<vector<pair<ll,ll> > > g(100000);
-void dijkstra(ll start){
-    for(int i=0;i<100000;i++)dis[i]=1e18;
+struct node{
+    ll cost, to;
+    bool operator<( const node& right ) const {
+        return cost == right.cost ? to < right.to : cost < right.cost;
+    }
+};
+
+vector<vector<node> > G(200000);
+vector<ll> dijkstra(ll start){
+    vector<ll> dis(200000, INF);  
     dis[start]=0;
-    multiset<pair<ll,ll> > ms;
-    ms.insert(make_pair(0,start));
-    pair<ll,ll> p,niko;
-    ll maki;
+    multiset<node> ms;
+    ms.insert({0, start});
     while(!ms.empty()){
-        p=*(ms.begin());
+        node p = *(ms.begin());
         ms.erase(ms.begin());
-        if(dis[p.second]<p.first)continue;
-        maki=g[p.second].size();
-        for(int i=0;i<maki;i++){
-            niko=g[p.second][i];
-            if(dis[niko.first]>dis[p.second]+niko.second){
-                dis[niko.first]=dis[p.second]+niko.second;
-                ms.insert(make_pair(dis[niko.first],niko.first));
+        if(dis[p.to] < p.cost) continue;
+        for(auto& i : G[p.to]){
+            if(dis[i.to] > dis[p.to] + i.cost){
+                dis[i.to] = dis[p.to] + i.cost;
+                ms.insert({dis[i.to], i.to});
             }
         }
     }
-    return;
+    return dis;
 }
 
 
