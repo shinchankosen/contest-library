@@ -195,31 +195,30 @@ void dijkstra(ll start){
 
 
 //topological sort
-typedef vector<int> VI;
-VI g[100010];
-int h[100010];
-  int v, e;
-  cin >> v >> e;
-  REP(i, e) {
-    int s, t;
-    cin >> s >> t;
-    s--;t--;
-    g[s].push_back(t);
-    h[t]++;
-  }
-  stack<int> st;
-  REP(i, v) if(h[i] == 0) st.push(i);
-  VI ans;
-  while(st.size()) {
-    int i = st.top(); st.pop();
-    ans.push_back(i);
-    for(auto& j: g[i]) {
-      h[j]--;
-      if(h[j] == 0) st.push(j);
-    }
-  }
-  for(int i: ans) cout << i << endl;
+{
+    ll n, m, a, b;
+    vector<ll> g[n];
+    vector<int> h(n, 0);
+    stack<int> st;
+    vector<int> ans;
 
+    for(int i=0;i<m;i++){
+        cin >> a >> b;
+        a--, b--;
+        g[a].pb(b);
+        h[b]++;
+    }
+    for(int i=0;i<n;i++) if(h[i] == 0) st.push(i);
+    while(!st.empty()) {
+        int i = st.top(); st.pop();
+        ans.pb(i);
+        for(auto& j : g[i]) {
+            h[j]--;
+            if(h[j] == 0) st.push(j);
+        }
+    }
+    for(int i: ans) cout << i << endl;
+}
 
 
 /////////bellman_ford
