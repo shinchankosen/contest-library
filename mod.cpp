@@ -13,7 +13,7 @@ long long modpow(long long a, long long n) {
 
 
 ///////// combination
-const N = 200007;
+const ll N = 200007;
 ll fac[N],finv[N],inv[N];
 void cominit(){
     fac[0]=fac[1]=1;
