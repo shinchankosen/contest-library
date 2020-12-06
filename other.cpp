@@ -30,13 +30,15 @@ long long modpow(long long a, long long n) {
 }
 
 
-///////// combinatison
-ll fac[200007],finv[200007],inv[200007];
+
+///////// combination
+const N = 200007;
+ll fac[N],finv[N],inv[N];
 void cominit(){
     fac[0]=fac[1]=1;
     finv[0]=finv[1]=1;
     inv[1]=1;
-    for(int i=2;i<200007;i++){
+    for(int i=2;i<N;i++){
         fac[i]=fac[i-1]*i%mod;
         inv[i]=mod-inv[mod%i]*(mod/i)%mod;
         finv[i]=finv[i-1]*inv[i]%mod;
@@ -47,6 +49,18 @@ ll com(ll n,ll k){
     if(n<0 || k<0)return 0;
     return fac[n]*(finv[k]*finv[n-k]%mod)%mod;
 }
+
+ll COM(ll n, ll k){
+    if(n < k or n < 0 or k < 0) return 0;
+    k = min(n - k, k);
+    ll ret = finv[k]; // for() modpow(a, mod - 2);
+    for(ll r=n-k+1;r<=n;r++){
+        ret *= r;
+        ret %= mod;
+    }
+    return ret;
+}
+
 main-> cominit();
 
 
