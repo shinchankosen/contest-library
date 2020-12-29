@@ -99,7 +99,7 @@ struct RollingHash {
         }
     }
     
-    // get hash of S[left:right]
+    // get hash of S[left:right)
     inline pair<long long, long long> get(int l, int r) const {
         long long res1 = hash1[r] - hash1[l] * power1[r-l] % mod1;
         if (res1 < 0) res1 += mod1;
@@ -108,7 +108,7 @@ struct RollingHash {
         return {res1, res2};
     }
  
-    // get lcp of S[a:] and T[b:]
+    // get lcp of S[a:) and T[b:)
     inline int getLCP(int a, int b) const {
         int len = min((int)hash1.size()-a, (int)hash1.size()-b);
         int low = -1, high = len;
