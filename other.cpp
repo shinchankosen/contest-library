@@ -1,3 +1,15 @@
+ll ftoll(string s, ll dig){
+    ll m = s.length(), id = -1;
+    rep(i, m) if(s[i] == '.') id = i;
+    if(id == -1) s += string(dig, '0');
+    else{
+        s = s.substr(0, id) + s.substr(id + 1, m - id - 1);
+        s += string(dig + 1 - m + id, '0');
+    }
+    return stoll(s);
+}
+
+
 ////lambda
 auto f = [&](auto&& f,int x) -> int{return x;};
 
