@@ -138,7 +138,6 @@ struct RollingHash {
 
 
 
-
 ///////Matrix
 template<class T> struct Matrix {
     vector<vector<T> > val;
