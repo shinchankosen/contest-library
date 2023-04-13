@@ -1,4 +1,4 @@
-struct nev{
+struct nev {
 private:
     ll a;
     vector<ll> v;
