@@ -62,5 +62,5 @@ template<int MOD> struct Modint {
     }
 };
 
-const int MOD = mod;
+const int MOD = MOD7;
 using mint = Modint<MOD>;
