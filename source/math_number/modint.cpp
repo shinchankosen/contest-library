@@ -1,6 +1,7 @@
 template<int MOD> struct Modint {
     long long val;
     constexpr Modint(long long v = 0) noexcept : val(v % MOD) { if (val < 0) val += MOD; }
+    constexpr int getmod() const { return MOD; }
     constexpr Modint operator - () const noexcept { return val ? MOD - val : 0; }
     constexpr Modint operator + (const Modint& r) const noexcept { return Modint(*this) += r; }
     constexpr Modint operator - (const Modint& r) const noexcept { return Modint(*this) -= r; }
