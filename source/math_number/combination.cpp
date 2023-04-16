@@ -1,6 +1,6 @@
 const ll N = 200007;
 ll fac[N],finv[N],inv[N];
-void cominit(){
+void cominit(ll mod){
     fac[0]=fac[1]=1;
     finv[0]=finv[1]=1;
     inv[1]=1;
@@ -16,5 +16,5 @@ ll com(ll n,ll k){
     return fac[n]*(finv[k]*finv[n-k]%mod)%mod;
 }
 
-// cominit()が必要
+// cominit(MOD)が必要
 // 必要に応じてNを大きくする
