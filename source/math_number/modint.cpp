@@ -45,7 +45,7 @@ template<int MOD> struct Modint {
     }
     constexpr Modint<MOD> pow(long long n) noexcept {
         if (n == 0) return 1;
-        if (n < 0) return this->pow(-n);
+        if (n < 0) return this->pow(-n).inv();
         Modint<MOD> ret = pow(n >> 1);
         ret *= ret;
         if (n & 1) ret *= *this;
