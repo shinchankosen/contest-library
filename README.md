@@ -1,5 +1,3 @@
 # programming-contest
 
-改造中
-
-FPSやる
+rainbou libraryの開発中
