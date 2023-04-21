@@ -1,3 +1,3 @@
 # programming-contest
 
-rainbou libraryの開発中
+rainbou libraryのほうを開発ちゅう
