@@ -1,4 +1,4 @@
-template<class T> std::vector<T> Transpose(const std::vector<T> &v) {
+template<class T> std::vector<T> transpose(const std::vector<T> &v) {
     int n = v.size(), m = v[0].size();
     std::vector<T> ret(m);
     for(int i = 0; i < m; i ++) {
