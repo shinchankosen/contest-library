@@ -42,3 +42,27 @@ template<class T> std::vector<T> rotate(const std::vector<T> &v, int k) {
     }
     return ret;
 }
+
+constexpr int safe_mod(int x, int m) noexcept {
+    x %= m;
+    if (x < 0) x += m;
+    return x;
+}
+
+template<class T> std::vector<T> shift(std::vector<T> v, int dy, int dx) {
+    int n = v.size();
+    if(n == 0) return v;
+    int m = v[0].size();
+    std::vector<T> ret = v;
+    for(int i = 0; i < n; i ++) {
+        for(int j = 0; j < m; j ++) {
+            ret[safe_mod(i + dy, n)][safe_mod(j + dx, m)] = v[i][j];
+        }
+    }
+    return ret;
+}
+
+template<class T> std::vector<T> shift_l(std::vector<T> v, int k) { return shift(v, 0, -k); }
+template<class T> std::vector<T> shift_r(std::vector<T> v, int k) { return shift(v, 0, k); }
+template<class T> std::vector<T> shift_u(std::vector<T> v, int k) { return shift(v, -k, 0); }
+template<class T> std::vector<T> shift_d(std::vector<T> v, int k) { return shift(v, k, 0); }
