@@ -50,7 +50,7 @@ template<class T> std::vector<T> shift(std::vector<T> v, int dy, int dx) {
     std::vector<T> ret = v;
     for(int i = 0, ni = dy; i < n; i ++, ni ++) {
         if(ni >= n) ni = 0;
-        for(int j = 0, nj = dx; j < m; j ++, dj ++) {
+        for(int j = 0, nj = dx; j < m; j ++, nj ++) {
             if(nj >= m) nj = 0;
             ret[ni][nj] = v[i][j];
         }
