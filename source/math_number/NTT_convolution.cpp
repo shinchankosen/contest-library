@@ -187,5 +187,4 @@ std::vector<long long> convolution_ll
     return res;
 }
 
-
 // depends on {modint.cpp, modpow_modinv.cpp}
