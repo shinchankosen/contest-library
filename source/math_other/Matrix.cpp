@@ -43,6 +43,9 @@ template<class T> struct Matrix {
     constexpr Matrix<T>& operator = (const std::vector<std::vector<T>> &A) noexcept {
         v = A; return *this;
     }
+    constexpr bool operator == (const Matrix<T> &A) noexcept {
+        return this->v == A.v;
+    }
 
     /**
      * @brief 転置
