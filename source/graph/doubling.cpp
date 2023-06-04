@@ -36,16 +36,16 @@ public:
         }
         return now;
     }
-    ll lca(ll a,ll b){
+    long long lca(long long a, long long b){
         if(dis[a] < dis[b]) b = par(b, dis[b] - dis[a]);
         else if(dis[a] > dis[b]) a = par(a, dis[a] - dis[b]);
-        ll le = -1, ri = dis[a], mid;
+        long long le = -1, ri = dis[a];
         while(ri - le > 1){
-            mid = (ri + le) / 2;
-            if(par(a,mid) == par(b,mid)) ri = mid;
+            long long mid = (ri + le) / 2;
+            if(par(a, mid) == par(b, mid)) ri = mid;
             else le = mid;
         }
         return par(a, ri);
     }
-    ll dist(ll a, ll b){return dis[a] + dis[b] - dis[lca(a,b)] * 2;}
+    long long dist(long long a, long long b){return dis[a] + dis[b] - dis[lca(a, b)] * 2;}
 };
