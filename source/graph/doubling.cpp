@@ -29,7 +29,6 @@ public:
             if(nx[i][j] != -1) nx[i][j + 1] = nx[nx[i][j]][j];
         }
     }
-
     // nowのm個先 (LCAではm個親)
     int par(int now, long long m) {
         for(long long i = 0, j = 1; j <= m; i ++, j <<= 1) {
@@ -37,4 +36,16 @@ public:
         }
         return now;
     }
+    ll lca(ll a,ll b){
+        if(dis[a] < dis[b]) b = par(b, dis[b] - dis[a]);
+        else if(dis[a] > dis[b]) a = par(a, dis[a] - dis[b]);
+        ll le = -1, ri = dis[a], mid;
+        while(ri - le > 1){
+            mid = (ri + le) / 2;
+            if(par(a,mid) == par(b,mid)) ri = mid;
+            else le = mid;
+        }
+        return par(a, ri);
+    }
+    ll dist(ll a, ll b){return dis[a] + dis[b] - dis[lca(a,b)] * 2;}
 };
