@@ -1,3 +1,3 @@
 # programming-contest
 
-FPSつくりたい
+next: bostanmori
