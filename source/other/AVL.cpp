@@ -12,9 +12,6 @@ using namespace std;
 const ll mod=1000000007, INF=(1LL<<60);
 #define doublecout(a) cout<<fixed<<setprecision(10)<<a<<endl;
 
-#define NDEBUG 1
-
-// Enable NDEBUG!
 using key_type = int;
 
 enum { L, R };
@@ -26,18 +23,12 @@ struct avl_node {
     int height;
     ll sum;
     
-
     static avl_node *const nil;
 
     avl_node() : avl_node(0, key_type()) {}
     avl_node(ll nn, key_type key) : avl_node(nn, key, nil, nil, 1, 1, nn) {}
     avl_node(ll nn, const key_type key, avl_node *left, avl_node *right, int size, int height, ll sum)
         : num(nn), key(key), ch({{left, right}}), size(size), height(height), sum(sum) {}
-    // void *operator new(size_t) {
-    //     static int p = 0;
-    //     static avl_node pool[400010];
-    //     return pool + p++;
-    // }
 };
 
 avl_node *const avl_node::nil = new avl_node(0, key_type(), nullptr, nullptr, 0, 0, 0);
@@ -136,8 +127,6 @@ std::pair<np, key_type> remove_at(np n, int k) {
 }
 
 np merge_with_root(np l, np root, np r) {
-    // Members of `root` except root->key may not be valid for performance
-    // reason.
     if (abs(l->height - r->height) <= 1) {
         root->ch = {{l, r}};
         return update(root);
@@ -168,8 +157,6 @@ std::pair<np, np> split_at(np n, int k) {
     np l = n->ch[L];
     np r = n->ch[R];
     n->ch[L] = n->ch[R] = nil;
-    // Members of avl_node passed to `merge` must be valid, but ones for
-    // `merge_with_root` doesn't have to.
     np nl, nr;
     if (k < sl) {
         std::tie(nl, nr) = split_at(l, k);
