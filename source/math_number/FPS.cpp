@@ -62,9 +62,19 @@ template <typename mint> struct FPS : vector<mint> {
     }
     inline FPS& operator /= (const mint& v) {
         assert(v != 0);
-        mint iv = v.inv();
+        mint iv = modinv(v);
         for (int i = 0; i < (int)this->size(); ++i) (*this)[i] *= iv;
         return *this;
+    }
+    inline FPS& operator <<= (int x) {
+        FPS res(x, 0);
+        res.insert(res.end(), begin(*this), end(*this));
+        return *this = res;
+    }
+    inline FPS& operator >>= (int x) {
+        FPS res;
+        res.insert(res.end(), begin(*this) + x, end(*this));
+        return *this = res;
     }
     inline mint eval(const mint& v){
         mint res = 0;
@@ -78,7 +88,7 @@ template <typename mint> struct FPS : vector<mint> {
         if (g.empty()) return f;
         return gcd(g, f % g);
     }
-
+ 
     // advanced operation
     // df/dx
     inline friend FPS diff(const FPS& f) {
@@ -87,7 +97,7 @@ template <typename mint> struct FPS : vector<mint> {
         for (int i = 1; i < n; ++i) res[i-1] = f[i] * i;
         return res;
     }
-
+ 
     // \int f dx
     inline friend FPS integral(const FPS& f) {
         int n = (int)f.size();
@@ -95,7 +105,7 @@ template <typename mint> struct FPS : vector<mint> {
         for (int i = 0; i < n; ++i) res[i+1] = f[i] / (i+1);
         return res;
     }
-
+ 
     // inv(f), f[0] must not be 0
     inline friend FPS inv(const FPS& f, int deg) {
         assert(f[0] != 0);
@@ -110,7 +120,7 @@ template <typename mint> struct FPS : vector<mint> {
     inline friend FPS inv(const FPS& f) {
         return inv(f, f.size());
     }
-
+ 
     // division, r must be normalized (r.back() must not be 0)
     inline FPS& operator /= (const FPS& r) {
         assert(!r.empty());
@@ -133,7 +143,7 @@ template <typename mint> struct FPS : vector<mint> {
     }
     inline FPS operator / (const FPS& r) const { return FPS(*this) /= r; }
     inline FPS operator % (const FPS& r) const { return FPS(*this) %= r; }
-
+ 
     // log(f) = \int f'/f dx, f[0] must be 1
     inline friend FPS log(const FPS& f, int deg) {
         assert(f[0] == 1);
@@ -144,7 +154,7 @@ template <typename mint> struct FPS : vector<mint> {
     inline friend FPS log(const FPS& f) {
         return log(f, f.size());
     }
-
+ 
     // exp(f), f[0] must be 0
     inline friend FPS exp(const FPS& f, int deg) {
         assert(f[0] == 0);
@@ -158,7 +168,7 @@ template <typename mint> struct FPS : vector<mint> {
     inline friend FPS exp(const FPS& f) {
         return exp(f, f.size());
     }
-
+ 
     // pow(f) = exp(e * log f)
     inline friend FPS pow(const FPS& f, long long e, int deg) {
         long long i = 0;
@@ -173,6 +183,22 @@ template <typename mint> struct FPS : vector<mint> {
     inline friend FPS pow(const FPS& f, long long e) {
         return pow(f, e, f.size());
     }
+ 
+    // sqrt(f), f[0] must be 1
+    inline friend FPS sqrt_base(const FPS& f, int deg) {
+        assert(f[0] == 1);
+        mint inv2 = mint(1) / 2;
+        FPS res(1, 1);
+        for (int i = 1; i < deg; i <<= 1) {
+            res = (res + f.pre(i << 1) * inv(res, i << 1)).pre(i << 1);
+            for (mint& x : res) x *= inv2;
+        }
+        res.resize(deg);
+        return res;
+    }
+    inline friend FPS sqrt_base(const FPS& f) {
+        return sqrt_base(f, f.size());
+    }
 };
 
 FPS<mint> modpow(const FPS<mint> &f, long long n, const FPS<mint> &m) {
@@ -185,4 +211,4 @@ FPS<mint> modpow(const FPS<mint> &f, long long n, const FPS<mint> &m) {
     return t;
 }
 
-// depends on {modint.cpp, NTT_convolution}
+// depends on {ntt_convolution.cpp, modint}

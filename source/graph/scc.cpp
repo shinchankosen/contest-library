@@ -29,7 +29,7 @@ public:
 
     int build(){
         for(int i=0;i<n;i++) if(!used[i]) dfs(i);
-        fill(be(used), 0);
+        fill(used.begin(), used.end(), 0);
         int k = 0;
         for(int i = order.size()-1;i >= 0;i--){
             if(!used[order[i]]) rdfs(order[i], k++);
@@ -45,8 +45,8 @@ public:
             if(comp[i] != comp[j]) ng[comp[i]].push_back(comp[j]);
         }
         for(int i=0;i<nn;i++){
-            sort(be(ng[i]));
-            ng[i].erase(unique(be(ng[i])), ng[i].end());
+            sort(ng[i].begin(), ng[i].end());
+            ng[i].erase(unique(ng[i].begin(), ng[i].end()), ng[i].end());
         }
         return k;
     }
