@@ -571,4 +571,4 @@ using RUpdateSumQ = StaticLazySegTree<
     lazy_segtree::UpdateWithSize<S, lazy_segtree::MaxLimit<S>{}()>,
     lazy_segtree::UpdateComposition<S, lazy_segtree::MaxLimit<S>{}()>,
     lazy_segtree::MaxLimit<S>
->
+>;

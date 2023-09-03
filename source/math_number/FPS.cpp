@@ -99,7 +99,7 @@ template <typename mint> struct FPS : vector<mint> {
     }
  
     // \int f dx
-    inline friend FPS integral(const FPS& f) {
+    inline friend FPS intg(const FPS& f) {
         int n = (int)f.size();
         FPS res(n+1, 0);
         for (int i = 0; i < n; ++i) res[i+1] = f[i] / (i+1);
@@ -147,7 +147,7 @@ template <typename mint> struct FPS : vector<mint> {
     // log(f) = \int f'/f dx, f[0] must be 1
     inline friend FPS log(const FPS& f, int deg) {
         assert(f[0] == 1);
-        FPS res = integral(diff(f) * inv(f, deg));
+        FPS res = intg(diff(f) * inv(f, deg));
         res.resize(deg);
         return res;
     }
@@ -185,7 +185,7 @@ template <typename mint> struct FPS : vector<mint> {
     }
  
     // sqrt(f), f[0] must be 1
-    inline friend FPS sqrt_base(const FPS& f, int deg) {
+    inline friend FPS sqrt(const FPS& f, int deg) {
         assert(f[0] == 1);
         mint inv2 = mint(1) / 2;
         FPS res(1, 1);
@@ -196,8 +196,8 @@ template <typename mint> struct FPS : vector<mint> {
         res.resize(deg);
         return res;
     }
-    inline friend FPS sqrt_base(const FPS& f) {
-        return sqrt_base(f, f.size());
+    inline friend FPS sqrt(const FPS& f) {
+        return sqrt(f, f.size());
     }
 };
 
