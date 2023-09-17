@@ -1,8 +1,34 @@
+namespace matrix {
+    template <typename T>
+    struct OperatorPropertyDefault {
+        constexpr static T zero() { return T(0); }
+        constexpr static T add(const T &a, const T &b) { return a + b; }
+        constexpr static T neg(const T &a) { return -a; }
+        constexpr static T one() { return T(1); }
+        constexpr static T mul(const T &a, const T &b) { return a * b; }
+        constexpr static T inv(const T &a) { return T(1) / a; }
+    };
+}
+
 /**
  * @brief 行列
  * @tparam T 型 行列(グリッド)の要素となるintやchar
+ * @tparam OperatorProperty 行列の要素の演算を定義する構造体 0,1と+,*なら省略可
+ *
+ * @note
+ * OperatorPropertyの例（整数のxorとandによる環）
+ * @code
+ * struct XorOperatorProperty {
+ *     constexpr static int zero() { return 0; }
+ *     constexpr static int add(const int &a, const int &b) { return a ^ b; }
+ *     constexpr static int neg(const int &a) { return a; }
+ *     constexpr static int one() { return 0; }
+ *     constexpr static int mul(const int &a, const int &b) { return a & b; }
+ * };
+ * @endcode
+ * constexprである必要はなく、またinvなど使わないものは定義しなくてもよい（必要なものがなかったらコンパイルエラーが発生する）
  */
-template<class T> struct Matrix {
+template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> struct Matrix {
     int n, m;
     std::vector<std::vector<T>> v;
 
@@ -12,7 +38,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     template <typename Iterable>
-    constexpr Matrix(const std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {
+    Matrix(const std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {
         v.resize(n);
         for(int i = 0; i < n; i++) {
             v[i].assign(v_[i].begin(), v_[i].end());
@@ -26,24 +52,27 @@ template<class T> struct Matrix {
      * @param _val 行列(グリッド)の要素の初期値
      * @return Matrix
      */
-    constexpr Matrix(int _n, int _m, T _val = T()) : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}
+    Matrix(int _n, int _m, T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}
     
-    constexpr auto begin() noexcept {return v.begin();}
-    constexpr auto end() noexcept {return v.end();}
+    auto begin() noexcept {return v.begin();}
+    auto end() noexcept {return v.end();}
 
     /**
      * @brief 行列(グリッド)の行数
      * @return size_t
      */
     [[nodiscard]]
-    constexpr size_t size() const {return v.size();}
+    size_t size() const {return v.size();}
 
     std::vector<T>& operator [] (int i) {return v[i];}
     const std::vector<T>& operator [] (int i) const {return v[i];}
-    constexpr Matrix<T>& operator = (const std::vector<std::vector<T>> &A) noexcept {
-        v = A; return *this;
+    Matrix<T>& operator = (const std::vector<std::vector<T>> &A) noexcept {
+        n = A.size();
+        m = (n == 0 ? 0 : A[0].size());
+        v = A;
+        return *this;
     }
-    constexpr bool operator == (const Matrix<T> &A) noexcept {
+    bool operator == (const Matrix<T> &A) noexcept {
         return this->v == A.v;
     }
 
@@ -52,7 +81,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix transpose() noexcept {
+    Matrix transpose() noexcept {
         if(n == 0) return Matrix(v);
         std::vector<std::vector<T>> ret(m);
         for(int i = 0; i < m; i ++) {
@@ -67,7 +96,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix rev_lr() noexcept {
+    Matrix rev_lr() noexcept {
         std::vector<std::vector<T>> ret = v;
         for(int i = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());
         return Matrix(ret);
@@ -78,7 +107,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix rev_ud() noexcept {
+    Matrix rev_ud() noexcept {
         std::vector<std::vector<T>> ret = v;
         reverse(ret.begin(), ret.end());
         return Matrix(ret);
@@ -90,7 +119,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix rotate(int k) noexcept {
+    Matrix rotate(int k) noexcept {
         k %= 4;
         if(k == 0) return *this;
         if(k < 0) k += 4;
@@ -115,7 +144,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix shift(int dy, int dx) noexcept {
+    Matrix shift(int dy, int dx) noexcept {
         std::vector<std::vector<T>> ret = v;
         for(int i = 0, ni = dy; i < n; i ++, ni ++) {
             if(ni >= n) ni = 0;
@@ -132,7 +161,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix shift_l(int k) noexcept {
+    Matrix shift_l(int k) noexcept {
         return this->shift(0, -k);
     }
 
@@ -141,7 +170,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix shift_r(int k) noexcept {
+    Matrix shift_r(int k) noexcept {
         return this->shift(0, k);
     }
 
@@ -150,7 +179,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix shift_u(int k) noexcept {
+    Matrix shift_u(int k) noexcept {
         return this->shift(-k, 0);
     }
 
@@ -159,7 +188,7 @@ template<class T> struct Matrix {
      * @return Matrix
      */
     [[nodiscard]]
-    constexpr Matrix shift_d(int k) noexcept {
+    Matrix shift_d(int k) noexcept {
         return this->shift(k, 0);
     }
 
@@ -168,7 +197,7 @@ template<class T> struct Matrix {
      * @return std::vector<std::string>
      */
     [[nodiscard]]
-    constexpr std::vector<std::string> vstr() noexcept {
+    std::vector<std::string> vstr() noexcept {
         std::vector<std::string> ret(n);
         for(int i = 0; i < n; i ++) {
             ret[i].assign(v[i].begin(), v[i].end());
@@ -182,7 +211,7 @@ template<class T> struct Matrix {
      * @return std::vector<T>
      */
     [[nodiscard]]
-    constexpr std::vector<T> col(int j) noexcept {
+    std::vector<T> col(int j) noexcept {
         std::vector<T> ret(n);
         for(int i = 0; i < n; i ++) {
             ret[i] = v[i][j];
@@ -196,7 +225,7 @@ template<class T> struct Matrix {
      * @return std::string
      */
     [[nodiscard]]
-    constexpr std::string str(int i) noexcept {
+    std::string str(int i) noexcept {
         std::string ret;
         ret.assign(v[i].begin(), v[i].end());
         return ret;
@@ -206,11 +235,12 @@ template<class T> struct Matrix {
      * @param B 足す行列
      * @return @c *this
     */
-    constexpr Matrix &operator+=(const Matrix &B) {
+    Matrix &operator+=(const Matrix &B) {
         if(n == 0) return (*this);
-        assert(n == B.size() && m == B[0].length());
+        assert(n == B.size() && m == B[0].size());
         for(int i = 0; i < n; i++)
-            for(int j = 0; j < m; j++) (*this)[i][j] += B[i][j];
+            for(int j = 0; j < m; j++)
+                (*this)[i][j] = OperatorProperty::add((*this)[i][j], B[i][j]);
         return (*this);
     }
     /**
@@ -218,11 +248,12 @@ template<class T> struct Matrix {
      * @param B 引く行列
      * @return @c *this
     */
-    constexpr Matrix &operator-=(const Matrix &B) {
+    Matrix &operator-=(const Matrix &B) {
         if(n == 0) return (*this);
-        assert(n == B.size() && m == B[0].length());
+        assert(n == B.size() && m == B[0].size());
         for(int i = 0; i < n; i++)
-            for(int j = 0; j < m; j++) (*this)[i][j] -= B[i][j];
+            for(int j = 0; j < m; j++) 
+                (*this)[i][j] = OperatorProperty::add((*this)[i][j], OperatorProperty::neg(B[i][j]));
         return (*this);
     }
 
@@ -231,13 +262,17 @@ template<class T> struct Matrix {
      * @param B 掛ける行列
      * @return @c *this
     */
-    constexpr Matrix &operator*=(const Matrix &B) {
+    Matrix &operator*=(const Matrix &B) {
         int p = B[0].size();
         Matrix<T> C(n, p);
-        for(int i = 0; i < n; i++)
-            for(int j = 0; j < m; j++)
-                for(int k = 0; k < p; k++) C[i][j] += (*this)[i][k] * B[k][j];
-        v = C.v;
+        for(int i = 0; i < n; i ++) {
+            for(int k = 0; k < p; k ++) {
+                for(int j = 0; j < m; j ++) {
+                    C[i][j] = OperatorProperty::add(C[i][j], OperatorProperty::mul((*this)[i][k], B[k][j]));
+                }
+            }
+        }
+        v.swap(C.v);
         m = p;
         return (*this);
     }
@@ -248,9 +283,9 @@ template<class T> struct Matrix {
      * @return Matrix
     */
     [[nodiscard]]
-    constexpr Matrix pow(long long k) {
+    Matrix pow(long long k) const {
         Matrix<T> A = *this, B(n, n);
-        for(int i = 0; i < n; i ++) B[i][i] = 1;
+        for(int i = 0; i < n; i ++) B[i][i] = OperatorProperty::one();
         while(k > 0) {
             if(k & 1) B *= A;
             A *= A;
@@ -260,11 +295,11 @@ template<class T> struct Matrix {
     }
 
     [[nodiscard]]
-    constexpr Matrix operator+(const Matrix &B) const { return (Matrix(*this) += B); }
+    Matrix operator+(const Matrix &B) const { return (Matrix(*this) += B); }
     [[nodiscard]]
-    constexpr Matrix operator-(const Matrix &B) const { return (Matrix(*this) -= B); }
+    Matrix operator-(const Matrix &B) const { return (Matrix(*this) -= B); }
     [[nodiscard]]
-    constexpr Matrix operator*(const Matrix &B) const { return (Matrix(*this) *= B); }
+    Matrix operator*(const Matrix &B) const { return (Matrix(*this) *= B); }
 
     /**
      * @brief 行列Aと列ベクトルBの積
@@ -273,11 +308,11 @@ template<class T> struct Matrix {
      * @return vector<T> 列ベクトル
     */
     [[nodiscard]]
-    constexpr friend std::vector<T> operator*(const Matrix &A, const std::vector<T> &B) {
+    friend std::vector<T> operator*(const Matrix &A, const std::vector<T> &B) {
         std::vector<T> ret(A.n, 0);
         for(int i = 0; i < A.n; i ++) {
             for(int j = 0; j < A.m; j ++) {
-                ret[i] += A[i][j] * B[j];
+                ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j], B[j]));
             }
         }
         return ret;
@@ -290,11 +325,11 @@ template<class T> struct Matrix {
      * @return vector<T> 行ベクトル
     */
     [[nodiscard]]
-    constexpr friend std::vector<T> operator*(const std::vector<T> &A, const Matrix &B) {
+    friend std::vector<T> operator*(const std::vector<T> &A, const Matrix &B) {
         std::vector<T> ret(B.m, 0);
         for(int i = 0; i < B.n; i ++) {
             for(int j = 0; j < B.m; j ++) {
-                ret[j] += A[i] * B[i][j];
+                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i], B[i][j]));
             }
         }
         return ret;
@@ -302,29 +337,146 @@ template<class T> struct Matrix {
 
     /**
      * @brief 行列式
-     * @tparam T modint
-     * @return T modint
+     * @return 行列式
     */
     [[nodiscard]]
-    T det() {
+    T det() const {
         assert(n == m);
-        if(n == 0) return 1;
-        T ans = 1;
-        std::vector A(n, std::valarray(T(0), n));
-        for(int i = 0; i < n; i ++) for(int j = 0; j < n; j ++) A[i][j] = this->v[i][j];
-        for(int i = 0; i < n; i ++) {
-            if(A[i][i].value() == 0) {
-                for(int j = i + 1; j < n; j ++) if(A[j][i].value()) {
-                    std::swap(A[i], A[j]);
-                    ans *= -1;
-                    break;
-                }
-                if(A[i][i].value() == 0) return 0;
-            }
-            ans *= A[i][i];
-            A[i] *= A[i][i].inv();
-            for(int j = i + 1; j < n; j ++) A[j] -= A[i] * A[j][i];
+        if(n == 0) return T(1);
+        if constexpr(std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>) {
+            std::vector A(n, std::valarray(T(0), n));
+            for(int i = 0; i < n; i ++) for(int j = 0; j < n; j ++) A[i][j] = this->v[i][j];
+            return forward_elimination(A);
+        } else {
+            auto A = this->v;
+            return forward_elimination(A);
         }
-        return ans;
+    }
+
+    /**
+     * @brief 逆行列
+     * @return 逆行列
+     */
+    [[nodiscard]]
+    Matrix inv() const {
+        assert(n == m);
+        if(n == 0) return Matrix(n, n);
+        if constexpr(std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>) {
+            std::vector A(n, std::valarray(T(0), n+n));
+            for(int i = 0; i < n; i ++) {
+                for(int j = 0; j < n; j ++) A[i][j] = this->v[i][j];
+                A[i][n+i] = T(1);
+            }
+            assert(forward_elimination(A) != T(0));
+            for(int i = n - 1; i >= 0; i --) {
+                for(int j = i - 1; j >= 0; j --) {
+                    A[j] -= A[i] * A[j][i];
+                }
+            }
+            Matrix<T> ret(n, n);
+            for(int i = 0; i < n; i ++) for(int j = 0; j < n; j ++) ret[i][j] = A[i][n+j];
+            return ret;
+        } else {
+            std::vector A(n, std::vector<T>(n+n, OperatorProperty::zero()));
+            for(int i = 0; i < n; i ++) {
+                for(int j = 0; j < n; j ++) A[i][j] = this->v[i][j];
+                A[i][n+i] = OperatorProperty::one();
+            }
+            assert(forward_elimination(A) != T(0));
+            for(int i = n - 1; i >= 0; i --) {
+                for(int j = i - 1; j >= 0; j --) {
+                    for(int k = n; k < n+n; k ++) {
+                        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k], A[j][i])));
+                    }
+                }
+            }
+            Matrix<T> ret(n, n);
+            for(int i = 0; i < n; i ++) for(int j = 0; j < n; j ++) ret[i][j] = A[i][n+j];
+            return ret;
+        }
+    }
+
+private:
+    /**
+     * @brief ガウスの消去法の前進消去を行って上三角行列を作り、行列式を返す
+     * @param A 行列
+     * @return 行列式
+     * @note
+     * rank(A) < nの場合は0を返す
+     * 正方行列ではない場合、0以外が残る左からn個の列を使って行列式を計算する
+     */
+    T forward_elimination(std::vector<std::valarray<T>>& A) const {
+        std::vector<int> pivot_col(n, 0);
+        T d(1);
+        for(int i = 0; i < n; i ++) {
+            if(i - 1 >= 0) pivot_col[i] = pivot_col[i - 1] + 1;
+            while(pivot_col[i] < m) {
+                int pivot = i;
+                if constexpr(std::is_floating_point_v<T>) {
+                    for(int j = i + 1; j < n; j ++) if(std::abs(A[j][pivot_col[i]]) > std::abs(A[pivot][pivot_col[i]])) pivot = j;
+                    if(std::abs(A[pivot][pivot_col[i]]) < 1e-9) {
+                        pivot_col[i] ++;
+                        continue;
+                    }
+                } else {
+                    while(pivot < n && A[pivot][pivot_col[i]] == T(0)) pivot ++;
+                    if(A[pivot][pivot_col[i]] == T(0)) {
+                        pivot_col[i] ++;
+                        continue;
+                    }
+                }
+                if(pivot != i) {
+                    std::swap(A[i], A[pivot]);
+                    d *= -T(1);
+                }
+                break;
+            }
+            if(pivot_col[i] == m) return T(0);
+            T scale = A[i][pivot_col[i]];
+            d *= scale;
+            A[i] /= scale;
+            for(int j = i + 1; j < n; j ++) A[j] -= A[i] * A[j][pivot_col[i]];
+        }
+        return d;
+    }
+
+    /**
+     * @brief ガウスの消去法の前進消去を行って上三角行列を作り、行列式を返す
+     * @param A 行列
+     * @return 行列式
+     * @note
+     * rank(A) < nの場合は0を返す
+     * 正方行列ではない場合、0以外が残る左からn個の列を使って行列式を計算する
+     */
+    T forward_elimination(std::vector<std::vector<T>>& A) const {
+        std::vector<int> pivot_col(n, 0);
+        T d = OperatorProperty::one();
+        for(int i = 0; i < n; i ++) {
+            if(i - 1 >= 0) pivot_col[i] = pivot_col[i - 1] + 1;
+            while(pivot_col[i] < m) {
+                int pivot = i;
+                while(pivot < n && A[pivot][pivot_col[i]] == OperatorProperty::zero()) pivot ++;
+                if(A[pivot][pivot_col[i]] == OperatorProperty::zero()) {
+                    pivot_col[i] ++;
+                    continue;
+                }
+                if(pivot != i) {
+                    std::swap(A[i], A[pivot]);
+                    d = OperatorProperty::neg(d);
+                }
+                break;
+            }
+            if(pivot_col[i] == m) return T(0);
+            T scale = A[i][pivot_col[i]];
+            d = OperatorProperty::mul(d, scale);
+            for(int j = pivot_col[i]; j < m; j ++) A[i][j] = OperatorProperty::mul(A[i][j], OperatorProperty::inv(scale));
+            for(int j = i + 1; j < n; j ++) {
+                T scale = A[j][pivot_col[i]];
+                for(int k = pivot_col[i]; k < m; k ++) {
+                    A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k], scale)));
+                }
+            }
+        }
+        return d;
     }
 };
