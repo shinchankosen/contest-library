@@ -1,12 +1,12 @@
-template <typename mint> struct FPS : vector<mint> {
-    using vector<mint>::vector;
+template <typename mint> struct FPS : std::vector<mint> {
+    using std::vector<mint>::vector;
  
     // constructor
-    FPS(const vector<mint>& r) : vector<mint>(r) {}
+    FPS(const std::vector<mint>& r) : std::vector<mint>(r) {}
  
     // core operator
     inline FPS pre(int siz) const {
-        return FPS(begin(*this), begin(*this) + min((int)this->size(), siz));
+        return FPS(begin(*this), begin(*this) + std::min((int)this->size(), siz));
     }
     inline FPS rev() const {
         FPS res = *this;
@@ -201,7 +201,7 @@ template <typename mint> struct FPS : vector<mint> {
     }
 };
 
-FPS<mint> modpow(const FPS<mint> &f, long long n, const FPS<mint> &m) {
+template <typename mint> FPS<mint> modpow(const FPS<mint> &f, long long n, const FPS<mint> &m) {
     if (n == 0) return FPS<mint>(1, 1);
     auto t = modpow(f, n / 2, m);
     t = (t * t) % m;
@@ -210,5 +210,3 @@ FPS<mint> modpow(const FPS<mint> &f, long long n, const FPS<mint> &m) {
     auto r = t % m;
     return t;
 }
-
-// depends on {ntt_convolution.cpp, modint}
