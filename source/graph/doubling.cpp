@@ -32,6 +32,7 @@ public:
     // nowのm個先 (LCAではm個親)
     int par(int now, long long m) {
         for(long long i = 0, j = 1; j <= m; i ++, j <<= 1) {
+            if(now == -1) return -1;
             if(m & j) now = nx[now][i];
         }
         return now;
