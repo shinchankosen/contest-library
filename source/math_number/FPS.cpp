@@ -72,6 +72,7 @@ template <typename mint> struct FPS : std::vector<mint> {
         return *this = res;
     }
     inline FPS& operator >>= (int x) {
+        if((int) this->size() <= x) return *this = FPS<mint> (1, 0);
         FPS res;
         res.insert(res.end(), begin(*this) + x, end(*this));
         return *this = res;
