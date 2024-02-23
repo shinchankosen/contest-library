@@ -1,3 +1,3 @@
 # programming-contest
 
-next: bostanmori
+しばらく追加ないと思う
