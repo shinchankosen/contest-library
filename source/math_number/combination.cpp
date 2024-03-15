@@ -2,6 +2,7 @@ struct Combination {
     long long C_MOD;
     vector<long long> fac, finv, inv;
     Combination(long long n, long long mod) noexcept : C_MOD(mod) {
+        n = max(n, 2LL);
         fac.resize(n, 0);
         finv.resize(n, 0);
         inv.resize(n, 0);
