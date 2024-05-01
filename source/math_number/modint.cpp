@@ -52,7 +52,7 @@ template<int MOD> struct Modint {
         if (n & 1) ret *= *this;
         return ret;
     }
-    constexpr Modint<MOD> inv() noexcept {
+    constexpr Modint<MOD> inv() const noexcept {
         long long a = this->val, b = MOD, u = 1, v = 0;
         while (b) {
             long long t = a / b;
