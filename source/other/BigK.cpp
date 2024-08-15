@@ -11,9 +11,8 @@ template<class T> struct BigK {
             sum_big += v_[i];
             ms_big.insert(v_[i]);
         }
-        int n = v.size();
         for(int i = k; i < n; i ++) {
-            sum_sml = v_[i];
+            sum_sml += v_[i];
             ms_sml.insert(v_[i]);
         }
     }
