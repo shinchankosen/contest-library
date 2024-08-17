@@ -35,7 +35,7 @@ public:
     int par(int now, long long m) {
         while(m) {
             if(now == -1) return -1;
-            int t = __builtin_ctz(m);
+            int t = __builtin_ctzll(m);
             now = nx[now][t];
             m ^= 1LL << t;
         }
