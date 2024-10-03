@@ -20,6 +20,7 @@ public:
         dfs(dfs, s);
         for(int j = 0; j < max_bit - 1; j ++) for(int i = 0; i < n; i ++) {
             if(nx[i][j] != -1) nx[i][j + 1] = nx[nx[i][j]][j];
+            else nx[i][j + 1] = -1;
         }
     }
     Doubling(std::vector<int> nx_) noexcept {
@@ -28,6 +29,7 @@ public:
         for(int i = 0; i < n; i ++) nx[i][0] = nx_[i];
         for(int j = 0; j < max_bit - 1; j ++) for(int i = 0; i < n; i ++) {
             if(nx[i][j] != -1) nx[i][j + 1] = nx[nx[i][j]][j];
+            else nx[i][j + 1] = -1;
         }
     }
 
