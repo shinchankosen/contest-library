@@ -1,6 +1,7 @@
 template <class T> struct BIT {
     int n;
     vector<T> a;
+    BIT(int m) : n(m), a(m + 1, 0) {}
     void add(int x, T y) {
         x ++;
         while(x <= n) {
