@@ -1,4 +1,4 @@
-vector<int> z_algorithm(string S){
+template <typename Type> vector<int> z_algo(Type S){
     int n = S.size();
     vector<int> Z(n);
     Z[0] = n;

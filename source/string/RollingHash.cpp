@@ -1,12 +1,12 @@
 struct RollingHash {
     static const int base1 = 1007, base2 = 2009;
     static const int mod1 = 1000000007, mod2 = 1000000009;
+    int n;
     std::vector<long long> hash1, hash2, power1, power2;
     std::vector<long long> hash1_, hash2_, power1_, power2_;
 
     void rev_init(std::string S) {
         std::reverse(S.begin(), S.end());
-        int n = (int)S.size();
         hash1_.assign(n+1, 0);
         hash2_.assign(n+1, 0);
         power1_.assign(n+1, 1);
@@ -21,7 +21,7 @@ struct RollingHash {
  
     // construct
     RollingHash(const std::string &S, int rev = 0) {
-        int n = (int)S.size();
+        n = (int)S.size();
         hash1.assign(n+1, 0);
         hash2.assign(n+1, 0);
         power1.assign(n+1, 1);
@@ -53,7 +53,7 @@ struct RollingHash {
     }
 
     // [l, r) is palindrome
-    inline bool is_palindrome(int l, int r, int n) const {
+    inline bool is_palindrome(int l, int r) const {
         int l_rev = n - r;
         int r_rev = n - l;
         return get(l, r) == get_rev(l_rev, r_rev);
