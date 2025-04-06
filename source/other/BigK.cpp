@@ -1,68 +1,70 @@
 template<class T> struct BigK {
-    int k, n;
+    int k; // size of big
     T sum_big, sum_sml;
-    std::vector<T> v;
     std::multiset<T> ms_big, ms_sml;
 
-    constexpr BigK(std::vector<T> v_, int k) noexcept : k(k), n(v_.size()), v(v_) {
+    BigK(std::vector<T> v, int k) noexcept : k(k) {
         sum_big = 0, sum_sml = 0;
-        sort(v_.begin(), v_.end(), [&](T i, T j) {return i > j;});
-        for(int i = 0; i < k; i ++) {
-            sum_big += v_[i];
-            ms_big.insert(v_[i]);
+        std::sort(v.begin(), v.end());
+        int n = v.size();
+        for(int i = 0; i < n - k; i ++) {
+            sum_sml += v[i];
+            ms_sml.insert(v[i]);
         }
-        for(int i = k; i < n; i ++) {
-            sum_sml += v_[i];
-            ms_sml.insert(v_[i]);
+        for(int i = n - k; i < n; i ++) {
+            sum_big += v[i];
+            ms_big.insert(v[i]);
         }
     }
-
-    // a[x] = y
-    constexpr void update(int x, T y) noexcept {
-        if(ms_big.find(v[x]) == ms_big.end()) {
-            auto itr = ms_sml.lower_bound(v[x]);
+    BigK(int k = -1) noexcept : k(k) {
+        sum_big = 0, sum_sml = 0;
+    }
+    void fit(size_t sz) {
+        while(ms_big.size() < sz) {
+            auto itr = prev(ms_sml.end());
+            sum_big += *itr;
+            ms_big.insert(*itr);
             sum_sml -= *itr;
             ms_sml.erase(itr);
-            ms_sml.insert(y);
-            sum_sml += y;
-        } else {
-            auto itr = ms_big.lower_bound(v[x]);
+        }
+        while(ms_big.size() > sz) {
+            auto itr = ms_big.begin();
+            sum_sml += *itr;
+            ms_sml.insert(*itr);
             sum_big -= *itr;
             ms_big.erase(itr);
-            ms_big.insert(y);
-            sum_big += y;
         }
-        v[x] = y;
-        if(!ms_big.empty() and !ms_sml.empty() and *ms_big.begin() < *ms_sml.rbegin()) {
-            auto itr1 = ms_big.begin();
-            auto itr2 = --ms_sml.end();
-            sum_big += *itr2 - *itr1;
-            sum_sml += *itr1 - *itr2;
-            ms_big.insert(*itr2);
-            ms_sml.insert(*itr1);
-            ms_sml.erase(itr2);
-            ms_big.erase(itr1);
+        if(ms_sml.empty() or ms_big.empty()) return;
+        while(*prev(ms_sml.end()) > *ms_big.begin()) {
+            auto itr1 = prev(ms_sml.end());
+            sum_sml -= *itr1;
+            ms_big.insert(*itr1);
+            sum_big += *itr1;
+            ms_sml.erase(itr1);
+            auto itr2 = ms_big.begin();
+            sum_sml += *itr2;
+            ms_sml.insert(*itr2);
+            sum_big -= *itr2;
+            ms_big.erase(itr2);
         }
+    }
+    void insert(T y, int sz = -1) {
+        ms_big.insert(y);
+        sum_big += y;
+        sz = std::max(sz, k);
+        if(sz >= 0) fit(sz);
         return;
     }
-
-    // 大きい順で i 番目 (1-indexed)
-    constexpr T k_num(int i) {
-        if(i == k) return *ms_big.begin();
-        if(i == k + 1) return *ms_sml.rbegin();
-        if(i <= k) {
-            if(i == 1) return *ms_big.rbegin();
-            if(i == n) return *ms_big.begin();
+    void erase(T y, int sz = -1) {
+        if(ms_big.find(y) != ms_big.end()) {
+            ms_big.erase(ms_big.find(y));
+            sum_big -= y;
         } else {
-            if(i == 1) return *ms_sml.rbegin();
-            if(i == n) return *ms_sml.begin();
+            ms_sml.erase(ms_sml.find(y));
+            sum_sml -= y;
         }
-        assert(0);
-    };
-    constexpr T big_sum() noexcept {
-        return sum_big;
-    }
-    constexpr T small_sum() noexcept {
-        return sum_sml;
+        sz = std::max(sz, k);
+        if(sz >= 0) fit(sz);
+        return;
     }
 };
