@@ -16,9 +16,17 @@
 
 ### modsqrt
 
+### CHT, lichao
+
+### euler trail
+
+### HL分解
+
 ### trie
 
 - binary_trieと合わせる？
+
+### 永続データ構造
 
 ### segtree
 
