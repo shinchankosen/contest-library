@@ -1,4 +1,4 @@
-// 牛ゲー 負辺がなければdijkstraに依存
+// depends on dijkstra
 vector<ll> USHI(ll n, vector<tuple<ll, ll, ll>> edges, ll s) {
     // v : x_i - x_j <= M
     vector<vector<pair<ll, ll>>> G(n);

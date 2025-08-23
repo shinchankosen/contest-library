@@ -13,7 +13,7 @@ public:
 	std::vector<int> next(int n, int lower, int upper) {
 		std::vector<int> a(n);
 		for(auto& e: a) e = next(lower, upper);
-		return std::move(a);
+		return a;
 	}
 
 	bool next_bool() { return next(0, 1); }
@@ -40,22 +40,22 @@ public:
 	std::string next_string_lower_case(const int len) {
 		std::string s(len, ' ');
 		for(auto& c: s) c = next_char_lower_case();
-		return std::move(s);
+		return s;
 	}
 	std::string next_string_upper_case(const int len) {
 		std::string s(len, ' ');
 		for(auto& c: s) c = next_char_upper_case();
-		return std::move(s);
+		return s;
 	}
 	std::string next_string(const int len) {
 		std::string s(len, ' ');
 		for(auto& c: s) c = next_char();
-		return std::move(s);
+		return s;
 	}
 	std::string next_string(const int len, const std::string& chars) {
 		std::string s(len, ' ');
 		for(auto& c: s) c = next_char(chars);
-		return std::move(s);
+		return s;
 	}
 
 	// 頂点数 order の木を生成する。
@@ -63,7 +63,7 @@ public:
 	std::vector<int> next_tree(const int order) {
 		std::vector<int> p(order - 1);
 		for(size_t i = 0; i < p.size(); i++) p[i] = next(0, i);
-		return std::move(p);
+		return p;
 	}
 
 	// 頂点数 order 辺数 size のグラフを生成する。
@@ -103,7 +103,7 @@ public:
 			}
 		}
 
-		return std::move(edges);
+		return edges;
 	}
 
 	// 頂点数 order のなもりグラフを生成する。

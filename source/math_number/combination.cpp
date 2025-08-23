@@ -1,20 +1,32 @@
-struct Combination {
-    long long C_MOD;
-    vector<long long> fac, finv, inv;
-    Combination(long long n, long long mod) noexcept : C_MOD(mod) {
-        n = max(n, 2LL);
-        fac.resize(n, 0);
-        finv.resize(n, 0);
-        inv.resize(n, 0);
-        fac[0] = fac[1] = finv[0] = finv[1] = inv[1] = 1;
-        for(int i = 2; i < n; i ++) {
-            fac[i] = fac[i - 1] * i % mod;
-            inv[i] = mod - inv[mod % i] * (mod / i) % mod;
-            finv[i] = finv[i - 1] * inv[i] % mod;
-        }
+// depends on modint
+
+namespace comb {
+    vector<mint> fac, finv, inv;
+}
+
+void cominit(int n) {
+    if(!comb::fac.empty()) return;
+    n = max(n + 1, 3);
+    comb::fac.resize(n);
+    comb::finv.resize(n);
+    comb::inv.resize(n);
+    comb::fac[0] = 1;
+    for(int i = 1; i < n; i ++) {
+        comb::fac[i] = comb::fac[i - 1] * i;
     }
-    long long com(long long n, long long k) {
-        if(n < k || n < 0 || k < 0) return 0;
-        return fac[n] * (finv[k] * finv[n - k] % C_MOD) % C_MOD;
+    comb::finv[n - 1] = comb::fac[n - 1].inv();
+    for(int i = n - 2; i >= 0; i --) {
+        comb::finv[i] = comb::finv[i + 1] * (i + 1);
+        comb::inv[i + 1] = comb::finv[i + 1] * comb::fac[i];
     }
-};
+}
+
+mint com(int n, int k) {
+    if(n < k || n < 0 || k < 0) return 0;
+    return comb::fac[n] * comb::finv[k] * comb::finv[n - k];
+}
+
+mint H(int n, int k) {
+    if(n == 0 and k == 0) return 1;
+    return com(n + k - 1, k);
+}

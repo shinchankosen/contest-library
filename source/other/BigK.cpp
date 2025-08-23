@@ -1,5 +1,5 @@
 template<class T> struct BigK {
-    int k; // size of big
+    int k; // size
     T sum_big, sum_sml;
     std::multiset<T> ms_big, ms_sml;
 

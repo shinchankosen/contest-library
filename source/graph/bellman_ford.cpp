@@ -1,10 +1,10 @@
 //bellman_ford
 template <typename T>
-std::vector<ll> bellman_ford(T &G, int start, int lim = -1){
+std::vector<long long> bellman_ford(T &G, int start, int lim = -1){
     // T -> vector<vector<pair<ll, int or ll>>> 
     // edge pair<ll, ll> -> pair<cost, to>
     int n = G.size();
-    std::vector<ll> dis(n, INF);
+    std::vector<long long> dis(n, INF);
     dis[start] = 0;
     
     bool update = 1;

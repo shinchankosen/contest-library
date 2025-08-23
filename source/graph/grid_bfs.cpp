@@ -1,7 +1,5 @@
     vector dis(h * w, INF);
     auto bfs = [&] (int sty, int stx) -> void {
-        int dy[4] = {-1, 1, 0, 0};
-        int dx[4] = {0, 0, -1, 1};
         dis[sty * w + stx] = 0;
         queue<int> q;
         q.push(sty * w + stx);
