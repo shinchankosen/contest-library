@@ -39,3 +39,5 @@
 - update, max, min, sum
 
 - add, max, min, sum
+
+### 動的セグ木
