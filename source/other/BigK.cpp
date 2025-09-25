@@ -21,6 +21,7 @@ template<class T> struct BigK {
     }
     void fit(size_t sz) {
         while(ms_big.size() < sz) {
+            if(ms_sml.empty()) return;
             auto itr = prev(ms_sml.end());
             sum_big += *itr;
             ms_big.insert(*itr);

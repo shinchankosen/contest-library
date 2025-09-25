@@ -18,6 +18,8 @@
 
 ### CHT, lichao
 
+### lowlink, 二重hogehoge
+
 ### euler trail
 
 ### HL分解
@@ -27,6 +29,8 @@
 - binary_trieと合わせる？
 
 ### 永続データ構造
+
+### 高速素因数分解
 
 ### segtree
 
