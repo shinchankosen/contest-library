@@ -1,0 +1,26 @@
+pair<int, vector<vector<int>>> centroid(vector<vector<int>> &v) {
+    int n = v.size(), r = -1;
+    vector used(n, 0), sz(n, 0);
+    vector<vector<int>> ret(n);
+    auto dfs = [&](auto &&dfs, int now, int p, int tsize, int anc) -> bool {
+        sz[now] = 1;
+        int ng = 0;
+        for(int e : v[now]) {
+            if(e == p or used[e]) continue;
+            if(dfs(dfs, e, now, tsize, anc)) return true;
+            if(sz[e] * 2 > tsize) ng = 1;
+            sz[now] += sz[e];
+        }
+        if((tsize - sz[now]) * 2 > tsize) ng = 1;
+        if(!ng) {
+            used[now] = 1;
+            if(anc == -1) r = now;
+            else ret[anc].push_back(now);
+            for(int e : v[now]) if(!used[e]) dfs(dfs, e, -1, (e == p ? tsize - sz[now] : sz[e]), now);
+            return true;
+        }
+        return false;
+    };
+    dfs(dfs, 0, -1, n, -1);
+    return make_pair(r, move(ret));
+}
