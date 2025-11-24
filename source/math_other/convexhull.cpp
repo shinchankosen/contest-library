@@ -1,6 +1,4 @@
-ll cross(ll x1, ll y1, ll x2, ll y2) {
-    return x1 * y2 - x2 * y1;
-}
+ll cross(ll x1, ll y1, ll x2, ll y2) {return x1 * y2 - x2 * y1;}
 using P = pair<ll, ll>;
 vector<P> ConvexHull(vector<P> ps) {
     int n = (int)ps.size();
@@ -23,7 +21,7 @@ vector<P> ConvexHull(vector<P> ps) {
         if (k >= t) {
             while(cross(res[k - 1].first - res[k - 2].first, res[k - 1].second - res[k - 2].second, 
             ps[i].first - res[k - 2].first, ps[i].second - res[k - 2].second) <= 0LL) {
-                -- k;
+                k --;
                 if (k < t) break;
             }
         }

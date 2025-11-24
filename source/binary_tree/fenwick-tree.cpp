@@ -20,4 +20,16 @@ template <class T> struct BIT {
     T sum(int x, int y) {
         return sum(y) - sum(x);
     }
+    int upper_bound(T w) {
+        int x = 0;
+        for(int i = (1 << __lg(n)); i; i >>= 1) {
+            if(x + i <= n) {
+                if(a[x + i] <= w) {
+                    w -= a[x + i];
+                    x += i;
+                }
+            }
+        }
+        return x;
+    }  
 };
