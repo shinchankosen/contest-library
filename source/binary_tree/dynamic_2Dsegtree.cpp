@@ -1,3 +1,4 @@
+// https://lorent-kyopro.hatenablog.com/entry/2021/03/12/025644 
 template <class S, S (*op)(S, S), S (*e)()> class dynamic_segtree {
 public:
     dynamic_segtree(size_t n) : n(n), root(nullptr) {}
