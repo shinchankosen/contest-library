@@ -1,0 +1,3 @@
+メモリ拡張：　ulimit -s unlimited
+
+原因特定：　g++ -g -fsanitize=address g.cpp
