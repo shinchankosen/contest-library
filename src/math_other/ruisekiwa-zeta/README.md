@@ -1,6 +1,6 @@
-# 累積和
+# 累積和(高速ゼータ変換)
 
-任意次元の累積和ライブラリです。
+任意次元のFZTライブラリです。
 
 ## 特徴
 
@@ -194,4 +194,4 @@ M = N1 × N2 × ... × NK
 ABC465 F で使用しました。
 
 提出:
-https://atcoder.jp/contests/abc465/submissions/77222686
+https://atcoder.jp/contests/abc465/submissions/77252441
