@@ -15,8 +15,21 @@
 
 ## コンストラクタ
 
+### 可変長引数版
+
 ```cpp
 Rui<T> sum(n1, n2, ..., nk);
+```
+
+### vector版
+
+```cpp
+Rui<T> sum({n1, n2, ..., nk});
+```
+
+```cpp
+// n^k
+Rui<T> sum(vector<int> (k, n));
 ```
 
 各次元のサイズを指定します。
@@ -25,7 +38,7 @@ Rui<T> sum(n1, n2, ..., nk);
 
 ```cpp
 Rui<ll> sum(n, m);
-Rui<int> sum(x, y, z);
+Rui<int> sum(vector<int> (3, 4));
 Rui<double> sum(a, b, c, d);
 ```
 
